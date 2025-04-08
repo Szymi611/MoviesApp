@@ -11,6 +11,7 @@ const DB_PASSWORD = process.env.DB_PASSWORD
 const moviesRoutes = require("./routes/movies");
 
 app.use(cors())
+app.use(express.json())
 
 mongoose
   .connect(`mongodb+srv://Szymi611:${DB_PASSWORD}@cluster0.beulit4.mongodb.net/`)

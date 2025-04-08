@@ -8,4 +8,6 @@ router.get('/getMoviesToDB', moviesController.getAndSaveMovies)
 
 router.get('/movies', moviesController.fetchMovies)
 
+router.post('/addMovie', moviesController.addMovie)
+
 module.exports = router;

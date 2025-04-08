@@ -6,13 +6,51 @@ export default function Movies() {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(12);
   const [totalMovies, setTotalMovies] = useState();
+  const [sort, setSort] = useState(null);
+  const [order, setOrder] = useState("asc");
+  const [isOpen, setIsOpen] = useState(false);
+  const [search, setSearch] = useState('');
+
+  const totalPages = Math.ceil(totalMovies / pageSize);
+  const options = ["Sort A-Z", "Sort Z-A"];
+
+  const handleInput = (e) => {
+    setSearch(e.target.value);
+  };
+
+  const toggleDropdown = () => setIsOpen(!isOpen);
+
+  const handleClick = (option) => {
+    if (option === "Sort A-Z") {
+      setSort("title");
+      setOrder("asc");
+    } else if (option === "Sort Z-A") {
+      setSort("title");
+      setOrder("desc");
+    } else {
+      setSort(null);
+      setOrder("asc");
+    }
+
+    setIsOpen(false);
+  };
 
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:5000/movies?page=${page}&pageSize=${pageSize}`
-        );
+        let url = `http://localhost:5000/movies?page=${page}&pageSize=${pageSize}`;
+
+        if (sort) {
+          url += `&sort=${sort}&order=${order}`;
+        }
+
+        if (search){
+          url += `&search=${search}`
+        }
+
+        console.log(url);
+
+        const response = await fetch(url);
 
         if (!response.ok) {
           console.error("Error fetching movies");
@@ -21,24 +59,57 @@ export default function Movies() {
         const data = await response.json();
         setMovies(data.movies);
         setTotalMovies(data.totalMovies);
+        console.log("fetching finished");
       } catch (err) {
         console.error(`Error fetching movies ${err}`);
       }
     };
     fetchMovies();
-  }, [page, pageSize]);
-
-  const totalPages = Math.ceil(totalMovies / pageSize);
+  }, [page, pageSize, sort, order, search]);
 
   return (
     <>
+      {/* Top */}
       <div className="bg-slate-400">
         <h1 className="text-2xl flex justify-center p-6">Movies</h1>
         <div className="flex justify-center items-center">
-          <label htmlFor="search"><IoSearch className="text-xl"/></label>
-          <input type="text" className="w-[20rem]" />
+          <form className="flex">
+            <label htmlFor="input"></label>
+            <input
+              type="text"
+              className="w-[15rem] mr-2"
+              value={search}
+              onChange={handleInput}
+            />
+            <button className="cursor-pointer " type="button">
+              <IoSearch className="text-xl mr-2 hover:text-2xl" />
+            </button>
+          </form>
+          <div className="relative inline-block w-[6rem]">
+            <button onClick={toggleDropdown}>
+              {sort
+                ? order === "asc"
+                  ? "Sort A-Z"
+                  : "Sort Z-A"
+                : "Select an option"}
+            </button>
+            {isOpen && (
+              <ul className="absolute top-full left-0 w-full bg-white border border-gray-300 shadow-md z-50">
+                {options.map((option) => (
+                  <li
+                    key={option}
+                    onClick={() => handleClick(option)}
+                    className="px-4 py-2 cursor-pointer hover:bg-gray-300 transition-colors"
+                  >
+                    {option}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </div>
 
+        {/* Movies */}
         <ul className="flex flex-wrap justify-center gap-6">
           {!movies.length && <p>Loading... Soon you will see movies</p>}
           {movies.map((movie) => (

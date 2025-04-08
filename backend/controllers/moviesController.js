@@ -44,9 +44,24 @@ exports.fetchMovies = async (req, res, next) => {
   try{
     const page = parseInt(req.query.page) || 1;
     const pageSize = parseInt(req.query.pageSize) || 12
+    const sort = req.query.sort || null
+    const order = req.query.order === 'desc' ? -1 : 1;
+    const search = req.query.search || ''
     const skip = (page - 1) * pageSize //ile pominiemy. Po to zeby wyswietlic druga strone np i filmy dla niej
     
-    const movies = await Movie.find().skip(skip).limit(pageSize).exec();
+
+    const moviesQuery = Movie.find().skip(skip).limit(pageSize)
+
+    if(sort){
+      moviesQuery.sort({ [sort]: order})
+    }
+
+    if(search){
+      moviesQuery.find({title: { $regex: search, $options: 'i' }}).skip().limit(pageSize);
+    }
+
+
+    const movies = await moviesQuery.exec();
 
     const totalMovies = await Movie.countDocuments();
 
@@ -60,4 +75,23 @@ exports.fetchMovies = async (req, res, next) => {
   }catch(error){
     res.status(500).json({ error: error.message });
   }
+}
+
+exports.addMovie = async (req, res, next) => {
+  try{
+    console.log(req.body)
+    const movieData = req.body;
+    const newMovie = await Movie.create(movieData);
+    res.status(201).json({message: 'Movie successfully added!', movie: newMovie})
+  }catch(err){
+    res.status(400).json({error: 'Error adding movie', details: err.message})
+  }
+}
+
+exports.editMovie = async (req, res, next) => {
+
+}
+
+exports.deleteMovie = async (req, res, next) => {
+  
 }
