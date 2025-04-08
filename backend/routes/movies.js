@@ -10,4 +10,6 @@ router.get('/movies', moviesController.fetchMovies)
 
 router.post('/addMovie', moviesController.addMovie)
 
+router.post('/deleteMovie', moviesController.deleteMovie)
+
 module.exports = router;

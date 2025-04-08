@@ -126,12 +126,14 @@ export default function AddMovie() {
           />
           <span>Is Available to watch online?</span>
         </label>
-        <button
-          type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded"
-        >
-          Add Movie
-        </button>
+        <div className="flex justify-center items-center">
+          <button
+            type="submit"
+            className="bg-blue-600 text-white px-4 py-2 rounded  hover:bg-blue-800 hover:text-lg cursor-pointer"
+          >
+            Add Movie
+          </button>
+        </div>
       </form>
     </>
   );

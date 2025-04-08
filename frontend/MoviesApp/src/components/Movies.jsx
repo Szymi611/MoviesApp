@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { IoSearch } from "react-icons/io5";
+import { RiDeleteBin2Line } from "react-icons/ri";
+import { FaPencil } from "react-icons/fa6";
 
 export default function Movies() {
   const [movies, setMovies] = useState([]);
@@ -9,7 +11,8 @@ export default function Movies() {
   const [sort, setSort] = useState(null);
   const [order, setOrder] = useState("asc");
   const [isOpen, setIsOpen] = useState(false);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
+  const [isDeleted, setIsDeleted] = useState(false);
 
   const totalPages = Math.ceil(totalMovies / pageSize);
   const options = ["Sort A-Z", "Sort Z-A"];
@@ -44,8 +47,8 @@ export default function Movies() {
           url += `&sort=${sort}&order=${order}`;
         }
 
-        if (search){
-          url += `&search=${search}`
+        if (search) {
+          url += `&search=${search}`;
         }
 
         console.log(url);
@@ -65,7 +68,32 @@ export default function Movies() {
       }
     };
     fetchMovies();
-  }, [page, pageSize, sort, order, search]);
+  }, [page, pageSize, sort, order, search, isDeleted]);
+
+  console.log(movies);
+
+  const deleteMovie = async (id) => {
+    console.log('Delete button clicked')
+    try {
+      const response = await fetch(`http://localhost:5000/deleteMovie`, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({id}),
+      });
+
+      if (!response.ok) {
+        console.error("Response error");
+      }
+
+      const data = await response.json();
+      setIsDeleted(true)
+      alert("Successfully deleted an object");
+    } catch (err) {
+      console.error("Error deleting movie", err);
+    }
+  };
 
   return (
     <>
@@ -134,6 +162,18 @@ export default function Movies() {
                   })}
                 </p>
                 <p className="text-center ">{movie.imdbRating}</p>
+                <div className="flex justify-around items-center">
+                  <div className="flex items-center">
+                    <FaPencil />
+                    <button className="cursor-pointer" >EDIT</button>
+                  </div>
+
+                  <div className="flex items-center">
+                    <RiDeleteBin2Line />
+                    <button className="cursor-pointer" onClick={() => deleteMovie(movie._id)}>DELETE</button>
+                  </div>
+
+                </div>
               </div>
             </li>
           ))}
