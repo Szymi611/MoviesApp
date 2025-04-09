@@ -12,4 +12,7 @@ router.post('/addMovie', moviesController.addMovie)
 
 router.post('/deleteMovie', moviesController.deleteMovie)
 
+router.get('/editMovie/:id', moviesController.getMovie)
+router.put('/editMovie/:id', moviesController.editMovie)
+
 module.exports = router;

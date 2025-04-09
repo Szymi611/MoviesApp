@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { IoSearch } from "react-icons/io5";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import { FaPencil } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
 
 export default function Movies() {
   const [movies, setMovies] = useState([]);
@@ -16,6 +17,8 @@ export default function Movies() {
 
   const totalPages = Math.ceil(totalMovies / pageSize);
   const options = ["Sort A-Z", "Sort Z-A"];
+
+  const navigate = useNavigate();
 
   const handleInput = (e) => {
     setSearch(e.target.value);
@@ -73,14 +76,14 @@ export default function Movies() {
   console.log(movies);
 
   const deleteMovie = async (id) => {
-    console.log('Delete button clicked')
+    console.log("Delete button clicked");
     try {
       const response = await fetch(`http://localhost:5000/deleteMovie`, {
         method: "POST",
         headers: {
           "Content-type": "application/json",
         },
-        body: JSON.stringify({id}),
+        body: JSON.stringify({ id }),
       });
 
       if (!response.ok) {
@@ -88,11 +91,14 @@ export default function Movies() {
       }
 
       const data = await response.json();
-      setIsDeleted(true)
+      setIsDeleted(true);
       alert("Successfully deleted an object");
     } catch (err) {
       console.error("Error deleting movie", err);
     }
+  };
+  const handleEditClick = (id) => {
+    navigate(`/editMovie/${id}`);
   };
 
   return (
@@ -113,7 +119,7 @@ export default function Movies() {
               <IoSearch className="text-xl mr-2 hover:text-2xl" />
             </button>
           </form>
-          <div className="relative inline-block w-[6rem]">
+          <div className="relative inline-block w-[8rem] mx-8">
             <button onClick={toggleDropdown}>
               {sort
                 ? order === "asc"
@@ -139,6 +145,7 @@ export default function Movies() {
 
         {/* Movies */}
         <ul className="flex flex-wrap justify-center gap-6">
+          {/* SETTIMOUT po to zeby jak za długo sie ładuja dac info ze nie ma takich w bazie */}
           {!movies.length && <p>Loading... Soon you will see movies</p>}
           {movies.map((movie) => (
             <li key={movie.imdbID} className="m-4">
@@ -165,14 +172,18 @@ export default function Movies() {
                 <div className="flex justify-around items-center">
                   <div className="flex items-center">
                     <FaPencil />
-                    <button className="cursor-pointer" >EDIT</button>
+                    <button className="cursor-pointer" onClick={() => handleEditClick(movie._id)}>EDIT</button>
                   </div>
 
                   <div className="flex items-center">
                     <RiDeleteBin2Line />
-                    <button className="cursor-pointer" onClick={() => deleteMovie(movie._id)}>DELETE</button>
+                    <button
+                      className="cursor-pointer"
+                      onClick={() => deleteMovie(movie._id)}
+                    >
+                      DELETE
+                    </button>
                   </div>
-
                 </div>
               </div>
             </li>

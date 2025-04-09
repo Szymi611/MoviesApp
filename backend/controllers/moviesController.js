@@ -98,7 +98,41 @@ exports.addMovie = async (req, res, next) => {
   }
 };
 
-exports.editMovie = async (req, res, next) => {};
+exports.getMovie = async (req, res, next) => {
+  try {
+    const movieId = req.params.id;
+    const movie = await Movie.findById(movieId);
+    
+    if (!movie) {
+      return res.status(404).json({ error: 'Movie not found' });
+    }
+    
+    res.status(200).json(movie);
+  } catch (err) {
+    res.status(400).json({ error: 'Error fetching movie', details: err.message });
+  }
+}
+
+exports.editMovie = async (req, res, next) => {
+  try{
+    const movieID = req.params.id
+    const updatedData = req.body;
+    console.log(movieID)
+    const updatedMovie = await Movie.findByIdAndUpdate(
+      movieID,
+      updatedData,
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedMovie) {
+      return res.status(404).json({ error: 'Movie not found' });
+    }
+
+    res.status(200).json(updatedMovie);
+  }catch(err){
+    res.status(400).json({error: 'Error editing a movie', details: err.message})
+  }
+};
 
 exports.deleteMovie = async (req, res, next) => {
   try {
@@ -115,3 +149,4 @@ exports.deleteMovie = async (req, res, next) => {
     res.status(400).json({ error: "Error deleting movie", details: err.message });
   }
 };
+

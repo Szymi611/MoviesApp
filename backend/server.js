@@ -26,4 +26,4 @@ app.use(moviesRoutes)
 
 app.listen(PORT, () => {
   console.log(`Serwer działa na porcie ${PORT}`)
-})
+})  
