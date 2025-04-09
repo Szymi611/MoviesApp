@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Navbar from "./Navbar";
 
 export default function AddMovie() {
   const [movieData, setMovieData] = useState({
@@ -12,8 +13,6 @@ export default function AddMovie() {
     released: "",
     imdbRating: "",
   });
-
-
 
   console.log(movieData);
 
@@ -34,7 +33,6 @@ export default function AddMovie() {
       imdbRating: parseFloat(movieData.imdbRating),
       released: new Date(movieData.released),
     };
-
 
     try {
       const response = await fetch(`http://localhost:5000/addMovie`, {
@@ -59,13 +57,14 @@ export default function AddMovie() {
 
   return (
     <>
+      <Navbar />
       <form onSubmit={handleSubmit} className="p-4 max-w-md mx-auto space-y-3">
         <input
           name="title"
           value={movieData.title}
           onChange={handleChange}
           placeholder="Title"
-          className="border p-2 w-full"
+          className="border p-2 w-full text-white"
           required
         />
         <input
@@ -73,7 +72,7 @@ export default function AddMovie() {
           value={movieData.year}
           onChange={handleChange}
           placeholder="Year"
-          className="border p-2 w-full"
+          className="border p-2 w-full text-white"
           type="number"
           required
         />
@@ -82,7 +81,7 @@ export default function AddMovie() {
           value={movieData.genre}
           onChange={handleChange}
           placeholder="Genre"
-          className="border p-2 w-full"
+          className="border p-2 w-full text-white"
           required
         />
         <input
@@ -90,14 +89,14 @@ export default function AddMovie() {
           value={movieData.imdbID}
           onChange={handleChange}
           placeholder="IMDb ID"
-          className="border p-2 w-full"
+          className="border p-2 w-full text-white"
         />
         <input
           name="poster"
           value={movieData.poster}
           onChange={handleChange}
           placeholder="Poster URL"
-          className="border p-2 w-full"
+          className="border p-2 w-full text-white"
           required
         />
         <input
@@ -105,7 +104,7 @@ export default function AddMovie() {
           value={movieData.released}
           onChange={handleChange}
           placeholder="Release Date"
-          className="border p-2 w-full"
+          className="border p-2 w-full text-white"
           type="date"
           required
         />
@@ -114,7 +113,7 @@ export default function AddMovie() {
           value={movieData.imdbRating}
           onChange={handleChange}
           placeholder="IMDb Rating"
-          className="border p-2 w-full"
+          className="border p-2 w-full text-white"
           type="number"
           step="0.1"
           required
@@ -127,13 +126,14 @@ export default function AddMovie() {
             type="checkbox"
             checked={movieData.isAvailable}
             onChange={handleChange}
+            className="text-white"
           />
-          <span>Is Available to watch online?</span>
+          <span className="text-white">Is Available to watch online?</span>
         </label>
         <div className="flex justify-center items-center">
           <button
             type="submit"
-            className="bg-blue-600 text-white px-4 py-2 rounded  hover:bg-blue-800 hover:text-lg cursor-pointer"
+            className="bg-blue-600 text-white px-4 py-2 rounded  hover:bg-blue-800 hover:text-lg cursor-pointer "
           >
             Add Movie
           </button>

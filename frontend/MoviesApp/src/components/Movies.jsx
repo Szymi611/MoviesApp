@@ -3,6 +3,7 @@ import { IoSearch } from "react-icons/io5";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import { FaPencil } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
+import Navbar from "./Navbar";
 
 export default function Movies() {
   const [movies, setMovies] = useState([]);
@@ -103,24 +104,25 @@ export default function Movies() {
 
   return (
     <>
+      <Navbar />
       {/* Top */}
-      <div className="bg-slate-400">
-        <h1 className="text-2xl flex justify-center p-6">Movies</h1>
+      <div className="">
+        <h1 className="text-2xl flex justify-center p-4"></h1>
         <div className="flex justify-center items-center">
           <form className="flex">
             <label htmlFor="input"></label>
             <input
               type="text"
-              className="w-[15rem] mr-2"
+              className="w-[15rem] mr-2 bg-gray-300 rounded-lg"
               value={search}
               onChange={handleInput}
             />
-            <button className="cursor-pointer " type="button">
-              <IoSearch className="text-xl mr-2 hover:text-2xl" />
+            <button className="cursor-pointer text-white" type="button">
+              <IoSearch className="text-xl text-white mr-2 hover:text-gray-400" />
             </button>
           </form>
-          <div className="relative inline-block w-[8rem] mx-8">
-            <button onClick={toggleDropdown}>
+          <div className="relative inline-block w-[10rem] mx-8">
+            <button onClick={toggleDropdown} className="cursor-pointer text-white hover:text-gray-400 hover:text-md">
               {sort
                 ? order === "asc"
                   ? "Sort A-Z"
@@ -148,41 +150,48 @@ export default function Movies() {
           {/* SETTIMOUT po to zeby jak za długo sie ładuja dac info ze nie ma takich w bazie */}
           {!movies.length && <p>Loading... Soon you will see movies</p>}
           {movies.map((movie) => (
-            <li key={movie.imdbID} className="m-4">
-              <div className="w-[15rem] h-[28rem]">
-                <div className="flex">
-                  <h2>{movie.title}</h2>
-                  <p className="pl-2">{movie.year}</p>
-                </div>
-                <img
-                  className="w-[15rem] h-[20rem]"
-                  src={movie.poster}
-                  alt={`Poster of ${movie.title} movie`}
-                />
-                <p className="text-sm italic">{movie.genre}</p>
-                <p>
-                  Date of released:{" "}
-                  {new Date(movie.released).toLocaleDateString("pl-PL", {
-                    year: "numeric",
-                    month: "numeric",
-                    day: "numeric",
-                  })}
-                </p>
-                <p className="text-center ">{movie.imdbRating}</p>
-                <div className="flex justify-around items-center">
-                  <div className="flex items-center">
-                    <FaPencil />
-                    <button className="cursor-pointer" onClick={() => handleEditClick(movie._id)}>EDIT</button>
+            <li key={movie.imdbID} className="m-4 bg-gray-400/80 rounded-lg">
+              <div className="w-[17rem] h-[30rem] ">
+                <div className="grid justify-center items-center">
+                  <div className="flex justify-center items-center">
+                    <h2 className="text-lg">{movie.title}</h2>
+                    <p className="pl-2">{movie.year}</p>
                   </div>
+                  <img
+                    className="w-[15rem] h-[20rem] justify-center flex items-center"
+                    src={movie.poster}
+                    alt={`Poster of ${movie.title} movie`}
+                  />
+                  <p className="text-sm italic">{movie.genre}</p>
+                  <p>
+                    Date of released:{" "}
+                    {new Date(movie.released).toLocaleDateString("pl-PL", {
+                      year: "numeric",
+                      month: "numeric",
+                      day: "numeric",
+                    })}
+                  </p>
+                  <p className="text-center italic">IMDB Rating: {movie.imdbRating}</p>
+                  <div className="flex justify-around items-center">
+                    <div className="flex items-center m-2">
+                      <FaPencil />
+                      <button
+                        className="cursor-pointer"
+                        onClick={() => handleEditClick(movie._id)}
+                      >
+                        EDIT
+                      </button>
+                    </div>
 
-                  <div className="flex items-center">
-                    <RiDeleteBin2Line />
-                    <button
-                      className="cursor-pointer"
-                      onClick={() => deleteMovie(movie._id)}
-                    >
-                      DELETE
-                    </button>
+                    <div className="flex items-center">
+                      <RiDeleteBin2Line />
+                      <button
+                        className="cursor-pointer"
+                        onClick={() => deleteMovie(movie._id)}
+                      >
+                        DELETE
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -195,18 +204,18 @@ export default function Movies() {
           <button
             onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
             disabled={page === 1}
-            className="cursor-pointer hover:text-slate-400"
+            className="cursor-pointer hover:text-slate-600 text-white"
           >
             Previous
           </button>
-          <span className="m-2">
+          <span className="m-2 text-white">
             {" "}
             {page} of {totalPages}{" "}
           </span>
           <button
             onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
             disabled={page === totalPages}
-            className="cursor-pointer hover:text-slate-400"
+            className="cursor-pointer text-white hover:text-slate-400"
           >
             Next
           </button>
