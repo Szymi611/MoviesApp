@@ -29,7 +29,7 @@ cd backend
 npm install
 ```
 
-Please add .env file to backend folder. To receive this file message me using mail or instagram :))
+Please add .env file to backend folder. To receive this file message me using mail or instagram, which you can find on my github page :))
 
 After adding .env file
 ```bash
