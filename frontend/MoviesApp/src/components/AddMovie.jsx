@@ -14,7 +14,6 @@ export default function AddMovie() {
     imdbRating: "",
   });
 
-  console.log(movieData);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;

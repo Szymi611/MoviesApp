@@ -15,6 +15,7 @@ export default function Movies() {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [isDeleted, setIsDeleted] = useState(false);
+  
 
   const totalPages = Math.ceil(totalMovies / pageSize);
   const options = ["Sort A-Z", "Sort Z-A"];
@@ -102,12 +103,13 @@ export default function Movies() {
     navigate(`/editMovie/${id}`);
   };
 
+
   return (
     <>
       <Navbar />
       {/* Top */}
       <div className="">
-        <h1 className="text-2xl flex justify-center p-4"></h1>
+        <h1 className="text-2xl flex justify-center p-2"></h1>
         <div className="flex justify-center items-center">
           <form className="flex">
             <label htmlFor="input"></label>
@@ -150,7 +152,7 @@ export default function Movies() {
           {/* SETTIMOUT po to zeby jak za długo sie ładuja dac info ze nie ma takich w bazie */}
           {!movies.length && <p>Loading... Soon you will see movies</p>}
           {movies.map((movie) => (
-            <li key={movie.imdbID} className="m-4 bg-gray-400/80 rounded-lg">
+            <li key={movie.imdbID} className="m-4 bg-gray-300/90 rounded-lg">
               <div className="w-[17rem] h-[30rem] ">
                 <div className="grid justify-center items-center">
                   <div className="flex justify-center items-center">

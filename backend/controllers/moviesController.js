@@ -137,7 +137,6 @@ exports.editMovie = async (req, res, next) => {
 exports.deleteMovie = async (req, res, next) => {
   try {
     const movieID = req.body.id;
-    console.log(movieID)
     const result = await Movie.deleteOne({"_id": new ObjectId(`${movieID}`)})
 
     if(result.deletedCount > 0){
